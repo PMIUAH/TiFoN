@@ -38,5 +38,28 @@ def main():
     model = networkStructure.build_network_structure(activation_functions, number_neurons_layers,
                                                      input_shape=input_shape)
 
+    # EN: Get the number of epochs for the training of the model.
+    # ES: Obtener el número de épocas para el entrenamiento del modelo.
+    number_epochs = menu.get_number_epochs()
+
+
+def get_number_epochs():
+    """
+    None --> int
+    OBJ: EN: Get the number of epochs for the training of the model. ES: Obtener el número de épocas para el entrenamiento
+    del modelo.
+    :return: int
+    """
+    verify = False
+    number_epochs = 0
+    while not verify:
+        print("Introduce the number of epochs for the training of the model:")
+        number_epochs = int(input("Insert the number of epochs: "))
+        if number_epochs > 0:
+            verify = True
+        else:
+            print("The number of epochs must be greater than 0.")
+    return number_epochs
+
 
 main()
