@@ -118,3 +118,32 @@ def get_selected_functions_layers(number_layers):
         else:
             functions_layers.append(show_menu_selection_activation_function(i))
     return functions_layers
+
+
+def get_number_neurons_layers(number_layers):
+    """
+    int --> []
+    OBJ: EN: Get the number of neurons for each layer. ES: Obtener el número de neuronas para cada capa.
+    :param number_layers: EN: Number of layers. ES: Número de capas.
+    :return: []
+    """
+    number_neurons_layers = []
+    for i in range(1, number_layers + 1):
+        # EN: As this predictive model is thought to be used for window sliding and predictive the last value of the
+        # sequence, the last layer will always have only one neuron.
+        # ES: Como este modelo predictivo está pensado para ser utilizado para el deslizamiento de ventanas y predecir
+        # el último valor de la secuencia, la última capa siempre tendrá solo una neurona.
+        if i == number_layers:
+            number_neurons_layers.append(1)
+        else:
+            verify = False
+            number_neurons = 0
+            while not verify:
+                print("Introduce the number of neurons for the layer", i, ":")
+                number_neurons = int(input("Insert the number of neurons: "))
+                if number_neurons > 0:
+                    verify = True
+                else:
+                    print("The number of neurons must be greater than 0.")
+            number_neurons_layers.append(number_neurons)
+    return number_neurons_layers
