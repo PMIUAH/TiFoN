@@ -14,4 +14,7 @@ def main():
         if not verify:
             print("The option selected is not valid.")
 
-
+    # EN: Get the number of layers and the activation functions for each layer.
+    # ES: Obtener el número de capas y las funciones de activación para cada capa.
+    number_layers = menu.show_menu_selection_number_layers()
+    activation_functions = menu.get_selected_functions_layers(number_layers)
