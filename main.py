@@ -1,5 +1,6 @@
 import menu
 import networkStructure
+import operations
 
 def main():
     """
@@ -42,5 +43,13 @@ def main():
     # ES: Obtener el número de épocas para el entrenamiento del modelo.
     number_epochs = menu.get_number_epochs()
 
+    # EN: Execute the selected option.
+    # ES: Ejecutar la opción seleccionada.
+    if option == 1:
+        operations.network_execution_individual_sensor(model, activation_functions, number_neurons_layers,
+                                                          epochs=number_epochs)
+    elif option == 2:
+        operations.network_execution_collection_sensors(model, activation_functions, number_neurons_layers,
+                                                           epochs=number_epochs)
 
 main()
