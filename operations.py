@@ -73,25 +73,26 @@ def network_execution_individual_sensor(model, activation_functions, number_neur
     :param epochs: EN: Number of epochs for the training of the model. ES: Número de épocas para el entrenamiento del
     modelo.
     """
-    #TODO
     # EN: Ask the user for the sensors IDs to be analyzed.
     # ES: Preguntar al usuario por los IDs de los sensores a analizar.
-    sensors_ids = get_sensors_ids_csv()
+    sensors_ids = menu.select_all_sensors_or_set_sensors()
     metrics_results = pd.DataFrame()
 
-    #TODO
     # EN: Timestamp in which the analysis started. ES: Marca de tiempo en la que comenzó el análisis.
+    init_time = pd.Timestamp.now()
+    # EN: Update its format to be admited to be included in the name of the file.
+    # ES: Actualizar su formato para ser admitido para ser incluido en el nombre del archivo.
+    init_time = init_time.strftime("%Y-%m-%d_%H-%M-%S")
 
     for sensor_id in sensors_ids:
-        #TODO
         # EN: Build as a dataframe the information of the model to save it in a CSV file.
         # ES: Construir como un dataframe la información del modelo para guardarlo en un archivo CSV.
-        # model_dataframe = networkStructure.build_model_network_dataframe(
-        #     activation_functions, number_neurons_layers, epochs)
-        #TODO
+        model_dataframe = networkStructure.build_model_network_dataframe(
+            activation_functions, number_neurons_layers, epochs)
+
         # EN: Save the information of the model in a CSV file.
         # ES: Guardar la información del modelo en un archivo CSV.
-        # filesCSV.save_prediction_model_individual_equipment(sensor_id, model_dataframe)
+        filesCSV.save_prediction_model_individual_sensor(sensor_id, model_dataframe, init_time)
 
 
         # EN: Get the data of the equipment from the CSV file.
@@ -120,10 +121,9 @@ def network_execution_individual_sensor(model, activation_functions, number_neur
         else:
             metrics_results = pd.concat([metrics_results, metrics])
 
-        #TODO
         # EN: Save the metrics of the network in a CSV file.
         # ES: Guardar las métricas de la red en un archivo CSV.
-        # filesCSV.save_prediction_results_individual_sensor(sensor_id, metrics_results)
+        filesCSV.save_prediction_results_individual_sensor(sensor_id, metrics_results, init_time)
 
         # EN: Reset the dataframe with the results to be empty for the next sensor.
         # ES: Reiniciar el dataframe con los resultados para que esté vacío para el siguiente sensor.
@@ -145,19 +145,20 @@ def network_execution_collection_sensors(model, activation_functions, number_neu
     """
     metrics_results = pd.DataFrame()
 
-    #TODO
     # EN: Timestamp in which the analysis started. ES: Marca de tiempo en la que comenzó el análisis.
+    init_time = pd.Timestamp.now()
+    # EN: Update its format to be admited to be included in the name of the file.
+    # ES: Actualizar su formato para ser admitido para ser incluido en el nombre del archivo.
+    init_time = init_time.strftime("%Y-%m-%d_%H-%M-%S")
 
-    #TODO
     # EN: Build as a dataframe the information of the model to save it in a CSV file.
     # ES: Construir como un dataframe la información del modelo para guardarlo en un archivo CSV.
-    # model_dataframe = networkStructure.build_model_network_dataframe(activation_functions, number_neurons_layers,
-    #                                                                  epochs)
+    model_dataframe = networkStructure.build_model_network_dataframe(activation_functions, number_neurons_layers,
+                                                                     epochs)
 
-    #TODO
     # EN: Save the information of the model in a CSV file.
     # ES: Guardar la información del modelo en un archivo CSV.
-    # filesCSV.save_prediction_model_collection_equips(model_dataframe, init_time)
+    filesCSV.save_prediction_model_collection_sensors(model_dataframe, init_time)
 
     # EN: Get the data of the sensors from the CSV file.
     # ES: Obtener los datos de los equipos del archivo CSV.
@@ -181,10 +182,9 @@ def network_execution_collection_sensors(model, activation_functions, number_neu
     else:
         metrics_results = pd.concat([metrics_results, metrics])
 
-    #TODO
     # EN: Save the metrics of the network in a CSV file.
     # ES: Guardar las métricas de la red en un archivo CSV.
-    # filesCSV.save_prediction_results_collection_equips(metrics_results, init_time)
+    filesCSV.save_prediction_results_collection_sensors(metrics_results, init_time)
 
 
 def network_execution(list_data, model, epochs=100):
