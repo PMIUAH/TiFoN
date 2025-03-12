@@ -5,7 +5,19 @@ import filesCSV as fcsv
 import tensorflow as tf
 import pandas as pd
 import numpy as np
-
+from sklearn.metrics import (
+    explained_variance_score,
+    mean_absolute_error,
+    mean_squared_error,
+    mean_squared_log_error,
+    median_absolute_error,
+    r2_score,
+    mean_absolute_percentage_error,
+    mean_tweedie_deviance,
+    max_error,
+    d2_tweedie_score
+)
+from tensorflow.python.ops.metrics_impl import root_mean_squared_error
 
 def get_sensors_ids_csv():
     """
@@ -244,23 +256,111 @@ def network_execution(list_data, model, epochs=100):
     # EN: Get the predictions of the network. ES: Obtener las predicciones de la red.
     predictions = model.predict(testing_X)
 
-    #TODO
     # EN: Analyze the predictions of the network. ES: Analizar las predicciones de la red.
-    # comparison_predictions = analyze_predictions(predictions, testing_y)
+    comparison_predictions = analyze_predictions(predictions, testing_y)
 
-    #TODO
     # EN: Set end time for the network. ES: Establecer el tiempo de finalización para la red.
-    # end_time = pd.Timestamp.now()
+    end_time = pd.Timestamp.now()
 
-    #TODO
     # EN: Get the time that the network took to execute. ES: Obtener el tiempo que la red tardó en ejecutarse.
-    # time_execution = end_time - init_time
+    time_execution = end_time - init_time
 
-    #TODO
     # EN: Add new column to the dataframe with the time that the network took to execute.
     # ES: Agregar nueva columna al dataframe con el tiempo que la red tardó en ejecutarse.
-    # comparison_predictions.loc["Time Execution"] = time_execution
+    comparison_predictions.loc["Time Execution"] = time_execution
 
-    #TODO
-    # return comparison_predictions
-    return None
+    return comparison_predictions
+
+
+def incremental_rmse(testing_y, predictions, batch_size=1024):
+    """
+    list, list, int --> list
+    OBJ: EN: Calculate the Root Mean Squared Error (RMSE) incrementally. ES: Calcular el Error Cuadrático Medio (RMSE)
+    incrementalmente.
+    :param testing_y: EN: Real values. ES: Valores reales.
+    :param predictions: EN: Predictions of the network. ES: Predicciones de la red.
+    :param batch_size: EN: Size of the batch. ES: Tamaño del lote.
+    :return: list EN: List of the RMSE calculated incrementally. ES: Lista del RMSE calculado incrementalmente.
+    """
+    total_squared_error = 0
+    total_samples = 0
+
+    for i in range(0, len(testing_y), batch_size):
+        batch_testing_y = testing_y[i:i + batch_size]
+        batch_predictions = predictions[i:i + batch_size]
+
+        batch_squared_error = np.sum(np.square(batch_testing_y - batch_predictions))
+        total_squared_error += batch_squared_error
+        total_samples += len(batch_testing_y)
+
+    rmse = np.sqrt(total_squared_error / total_samples)
+    return rmse
+
+
+def analyze_predictions(predictions, testing_y):
+    """
+    list, list --> dataframe
+    OBJ: EN: Check how good the predictions are from the network considering the real values. ES: Comprobar qué tan
+    buenas son las predicciones de la red considerando los valores reales.
+    :param predictions: EN: Predictions of the network. ES: Predicciones de la red.
+    :param testing_y: EN: Real values. ES: Valores reales.
+    :return: dataframe EN: Dataframe with the comparison results between the predictions and the real values.
+    ES: Dataframe con los resultados de comparación entre las predicciones y los valores reales.
+    """
+    # EN: Set in a same dataframe the predictions and the real values.
+    # ES: Establecer en un mismo dataframe las predicciones y los valores reales.
+    df_predictions = pd.DataFrame(predictions, columns=["Predictions"])
+    df_predictions["Real Values"] = testing_y
+
+    # EN: Get the Explained Variance Regression Score.
+    # ES: Obtener el Score de Regresión de Varianza Explicado.
+    variance_score = explained_variance_score(testing_y, predictions)
+    # EN: Get the Mean Squared Error (MSE).
+    # ES: Obtener el Error Cuadrático Medio (MSE).
+    mse = mean_squared_error(testing_y, predictions)
+    # EN: Get the Root Mean Squared Error (RMSE).
+    # ES: Obtener el Error Cuadrático Medio (RMSE).
+    # EN: To get the value of the RMSE, it is necessary to convert the tensor to a numpy array.
+    # ES: Para obtener el valor del RMSE, es necesario convertir el tensor a un array de numpy.
+    #rmse = tf.sqrt(tf.reduce_mean(tf.square(tf.subtract(testing_y, predictions)))).numpy()
+    rmse = incremental_rmse(testing_y, predictions)
+    # EN: Get the Mean Squared Log Error (MSLE).
+    # ES: Obtener el Error Logarítmico Cuadrático Medio (MSLE).
+    msle = mean_squared_log_error(np.abs(testing_y), np.abs(predictions))
+    # EN: Get the Mean Absolute Error (MAE).
+    # ES: Obtener el Error Absoluto Medio (MAE).
+    mae = mean_absolute_error(testing_y, predictions)
+    # EN: Get the Median Absolute Error (MedAE).
+    # ES: Obtener el Error Absoluto Mediano (MedAE).
+    medae = median_absolute_error(testing_y, predictions)
+    # EN: Get the Mean Absolute Percentage Error (MAPE).
+    # ES: Obtener el Error Porcentual Absoluto Medio (MAPE).
+    mape = mean_absolute_percentage_error(testing_y, predictions)
+    # EN: Get the R2 Score.
+    # ES: Obtener el Score R2.
+    r2_score_value = r2_score(testing_y, predictions)
+    # EN: Get the Mean Tweedie Deviance (MTD).
+    # ES: Obtener la Desviación Tweedie Media (MTD).
+    mtd = mean_tweedie_deviance(testing_y, predictions)
+    # EN: Get the D2 Tweedie Score.
+    # ES: Obtener el Score D2 Tweedie.
+    d2_tweedie_score_value = d2_tweedie_score(testing_y, predictions)
+    # EN: Get the Max Error.
+    # ES: Obtener el Error Máximo.
+    max_error_value = max_error(testing_y, predictions)
+
+    # EN: Set the headers for the dataframe.
+    # ES: Establecer los encabezados para el dataframe.
+    headers = ["Explained Variance Score", "Mean Squared Error", "Root Mean Squared Error", "Mean Squared Log Error",
+               "Mean Absolute Error", "Median Absolute Error", "Mean Absolute Percentage Error", "R2 Score",
+               "Mean Tweedie Deviance", "D2 Tweedie Score", "Max Error"]
+    # EN: Set the values for the dataframe.
+    # ES: Establecer los valores para el dataframe.
+    values = [variance_score, mse, rmse, msle, mae, medae, mape, r2_score_value, mtd, d2_tweedie_score_value,
+                max_error_value]
+
+    # EN: Create the dataframe with the comparison results between the predictions and the real values.
+    # ES: Crear el dataframe con los resultados de comparación entre las predicciones y los valores reales.
+    df_results = pd.DataFrame(values, index=headers, columns=["Values"])
+
+    return df_results
