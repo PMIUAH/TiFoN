@@ -48,7 +48,7 @@ def get_individual_sensor_data(sensor_id):
         # ES: Leer el archivo.
         train_dataset = pd.read_csv(filename)
 
-    filename = ('data_individual_sensors/Windows_Sliding_Test_Individual_Sensor_' + str(sensor_id) + '.csv')
+    filename = ('data_individual_sensors/Windows_Sliding_Testing_Individual_Sensor_' + str(sensor_id) + '.csv')
 
     # EN: Check if the file exists.
     # ES: Comprobar si el archivo existe.
@@ -85,7 +85,7 @@ def get_collection_sensors_data():
         # ES: Leer el archivo.
         train_dataset = pd.read_csv(filename)
 
-    filename = 'data_collection_sensors/Windows_Sliding_Test_Collection_Sensors.csv'
+    filename = 'data_collection_sensors/Windows_Sliding_Testing_Collection_Sensors.csv'
 
     # EN: Check if the file exists.
     # ES: Comprobar si el archivo existe.
@@ -111,7 +111,7 @@ def save_prediction_model_individual_sensor(sensor_id, model_structure, analysis
     se realizó el análisis.
     :return: None
     """
-    filename = ('prediction_results_individual_equip/Prediction_Model_Individual_Sensor_' + str(sensor_id) + '_'
+    filename = ('prediction_results_individual_sensors/Prediction_Model_Individual_Sensor_' + str(sensor_id) + '_'
                 + str(analysis_timestamp) + '.csv')
     model_structure.to_csv(filename, index=False)
 
@@ -128,12 +128,12 @@ def save_prediction_results_individual_sensor(sensor_id, prediction_results, ana
     ES: Marca de tiempo en la que se realizó el análisis.
     :return: None
     """
-    filename = ('prediction_results_individual_equip/Prediction_Results_Individual_Sensor_' + str(sensor_id)
+    filename = ('prediction_results_individual_sensors/Prediction_Results_Individual_Sensor_' + str(sensor_id)
                 + '_' + str(analysis_timestamp) + '.csv')
     prediction_results.to_csv(filename, index=False)
 
 
-def save_prediction_model_collection_equips(model_structure, analysis_timestamp):
+def save_prediction_model_collection_sensors(model_structure, analysis_timestamp):
     """
     dataframe, String --> None
     OBJ: EN: Save the prediction model from a Neural Network used for a collection of sensors.
@@ -143,12 +143,12 @@ def save_prediction_model_collection_equips(model_structure, analysis_timestamp)
     se realizó el análisis.
     :return: None
     """
-    filename = ('prediction_results_collection_equips/Prediction_Model_Collection_Sensors_' + str(analysis_timestamp)
+    filename = ('prediction_results_collection_sensors/Prediction_Model_Collection_Sensors_' + str(analysis_timestamp)
                 + '.csv')
     model_structure.to_csv(filename, index=False)
 
 
-def save_prediction_results_collection_equips(prediction_results, analysis_timestamp):
+def save_prediction_results_collection_sensors(prediction_results, analysis_timestamp):
     """
     dataframe, String --> None
     OBJ: EN: Save the comparison results of the prediction of a collection of sensors in a csv file.
@@ -159,6 +159,6 @@ def save_prediction_results_collection_equips(prediction_results, analysis_times
     ES: Marca de tiempo en la que se realizó el análisis.
     :return: None
     """
-    filename = ('prediction_results_collection_equips/Prediction_Results_Collection_Sensors_' + str(analysis_timestamp)
+    filename = ('prediction_results_collection_sensors/Prediction_Results_Collection_Sensors_' + str(analysis_timestamp)
                 + '.csv')
     prediction_results.to_csv(filename, index=False)
