@@ -1,3 +1,6 @@
+import filesCSV as fcsv
+
+
 def show_menu():
     """
     None --> None
@@ -166,3 +169,71 @@ def get_number_epochs():
         else:
             print("The number of epochs must be greater than 0.")
     return number_epochs
+
+
+def select_all_sensors_or_set_sensors():
+    """
+    None --> list
+    OBJ: EN: Show the menu to select if we want to analyze all the sensors individually or select a set of them.
+    ES: Muestra el menú para seleccionar si queremos analizar todos los sensores individualmente o seleccionar un
+    conjunto de ellos.
+    :return: list EN: List with the selected sensors. ES: Lista con los sensores seleccionados.
+    """
+    verify = False
+    option = 0
+    sensors = []
+    while not verify:
+        print("Mark the option you want to select:")
+        print("1. Analyze all the sensors individually.")
+        print("2. Select a set of sensors.")
+
+        option = int(input("Insert the number of the option: "))
+        if 1 <= option <= 2:
+            verify = True
+        else:
+            print("The option selected is not valid.")
+
+    if option == 1:
+        sensors_ids = fcsv.get_list_sensors_ids().values.transpose().tolist()[0]
+        for i in range(len(sensors_ids)):
+            sensors.append(sensors_ids[i])
+    if option == 2:
+        verify = False
+        number_sensors = 0
+        while not verify:
+            print("Introduce the number of sensors you want to select:")
+            number_sensors = int(input("Insert the number of sensors: "))
+            if number_sensors > 0:
+                verify = True
+            else:
+                print("The number of sensors must be greater than 0.")
+
+        sensors_ids = fcsv.get_list_sensors_ids().values.transpose().tolist()[0]
+        # EN: Show the list of sensors and select the sensors and check if the selected sensors are correct
+        # and are not repeated. The list of sensors is shown in the same order as the IDs and printed in the console
+        # to facilitate the selection of the sensors set 10 by 10.
+        # ES: Mostrar la lista de sensores y seleccionar los sensores y comprobar si los sensores seleccionados son
+        # correctos y no se repiten. La lista de sensores se muestra en el mismo orden que los IDs y se imprime en la
+        # consola para facilitar la selección del conjunto de sensores de 10 en 10.
+        print("List of sensors:")
+        for i in range(len(sensors_ids)):
+            print(sensors_ids[i], end=" ")
+            if (i + 1) % 10 == 0:
+                print()
+        print()
+
+        for i in range(number_sensors):
+            verify = False
+            while not verify:
+                print("Introduce the ID of the sensor", i + 1, ":")
+                equip_id = int(input("Insert the ID of the sensor: "))
+                if equip_id in sensors_ids:
+                    if equip_id not in sensors:
+                        verify = True
+                        sensors.append(equip_id)
+                    else:
+                        print("The sensor is already selected.")
+                else:
+                    print("The sensor ID is not valid.")
+
+    return sensors

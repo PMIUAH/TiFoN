@@ -31,6 +31,33 @@ def build_network_structure(list_activation_functions_layers, list_number_neuron
     return model
 
 
+def build_model_network_dataframe(list_activation_functions_layers, list_number_neurons_layers, number_epochs):
+    """
+    list, list, int --> dataframe
+    OBJ: EN: Build the model of the network as a dataframe structure.
+    ES: Construir el modelo de la red como una estructura de dataframe.
+    :param list_activation_functions_layers: EN: List of activation functions for each layer. ES: Lista de funciones de
+    activación para cada capa.
+    :param list_number_neurons_layers: EN: List of the number of neurons for each layer. ES: Lista del número de
+    neuronas para cada capa.
+    :param number_epochs: EN: Number of epochs. ES: Número de épocas.
+    :return:
+    """
+    headers = ["Layer", "Activation Function", "Number of Neurons", "Number of Epochs"]
+    model_list = []
+    for i in range(len(list_activation_functions_layers)):
+        model_list.append(
+            [
+                i + 1,
+                identify_activation_function(list_activation_functions_layers[i]),
+                list_number_neurons_layers[i],
+                number_epochs]
+        )
+    model_dataframe = pd.DataFrame(model_list, columns=headers)
+
+    return model_dataframe
+
+
 def build_network_structure_layer(number_activation_function, number_neurons_layers):
     """
     int, int, int, bool --> layer

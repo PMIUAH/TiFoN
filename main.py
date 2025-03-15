@@ -1,5 +1,6 @@
 import menu
 import networkStructure
+import operations
 
 def main():
     """
@@ -42,24 +43,13 @@ def main():
     # ES: Obtener el número de épocas para el entrenamiento del modelo.
     number_epochs = menu.get_number_epochs()
 
-
-def get_number_epochs():
-    """
-    None --> int
-    OBJ: EN: Get the number of epochs for the training of the model. ES: Obtener el número de épocas para el entrenamiento
-    del modelo.
-    :return: int
-    """
-    verify = False
-    number_epochs = 0
-    while not verify:
-        print("Introduce the number of epochs for the training of the model:")
-        number_epochs = int(input("Insert the number of epochs: "))
-        if number_epochs > 0:
-            verify = True
-        else:
-            print("The number of epochs must be greater than 0.")
-    return number_epochs
-
+    # EN: Execute the selected option.
+    # ES: Ejecutar la opción seleccionada.
+    if option == 1:
+        operations.network_execution_individual_sensor(model, activation_functions, number_neurons_layers,
+                                                          epochs=number_epochs)
+    elif option == 2:
+        operations.network_execution_collection_sensors(model, activation_functions, number_neurons_layers,
+                                                           epochs=number_epochs)
 
 main()
