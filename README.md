@@ -3,7 +3,17 @@ TiFoN is a software designed to facilitate predictive time series analysis using
 
 This software is designed, implemented and delivered by members of de IMP (PMI) research group of the University of Alcala (Universidad de Alcalá), in Spain (España).
 
-## Installation
+## TiFoN Documentation
+TiFoN full documentation can be found here: <a href="https://github.com/PMIUAH/TiFoN/wiki">TiFoN Wiki</a>
+
+### User documentation
+* <a href="https://github.com/PMIUAH/TiFoN/wiki/Users-%E2%80%90-TiFoN-manual">User Manual</a>
+
+### Developers documentation
+* <a href="https://github.com/PMIUAH/TiFoN/wiki/Developers-%E2%80%90-TiFoN-installation">Developers - TiFoN installation</a>
+* <a href="https://github.com/PMIUAH/TiFoN/wiki/Developers-%E2%80%90-TiFoN-architecture">Developers - TiFoN architecture</a>
+
+## TiFoN Installation
 To install the software, it is recommended to use Python version '3.12' or higher. After installing Python, it is recommended to follow the next steps:
 
 1. Clone this repository: https://github.com/PMIUAH/TiFoN/tree/main to your computer.
