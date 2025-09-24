@@ -25,6 +25,7 @@ def main():
     # ES: Obtener el número de neuronas para cada capa.
     number_neurons_layers = menu.get_number_neurons_layers(number_layers)
 
+    # TODO: Personalize the input shape for the model according to the number of columns it has.
     # EN: Set the input number shape for the model.
     # ES: Establecer la forma del número de entradas para el modelo.
     input_shape = 1
@@ -42,6 +43,9 @@ def main():
     # EN: Get the number of epochs for the training of the model.
     # ES: Obtener el número de épocas para el entrenamiento del modelo.
     number_epochs = menu.get_number_epochs()
+
+    # TODO: Personalize from where the datasets come from. Set the path + structure of the files names.
+    # TODO: Consider providing input files and then divide training and testing or else that the user provides the files of each kind separately.
 
     # EN: Execute the selected option.
     # ES: Ejecutar la opción seleccionada.
