@@ -6,4 +6,4 @@ scipy==1.17.0
 tensorflow==2.20.0
 tensorflow-cpu==2.20.0
 tensorflow_intel==2.18.0
-protobuf==6.33.4
+protobuf==7.34.0rc1
